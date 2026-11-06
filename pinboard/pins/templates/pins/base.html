@@ -1,0 +1,36 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Tablón{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'pins/style.css' %}">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="{% url 'pin_list' %}">tablón</a>
+  <form class="search" method="get" action="{% url 'pin_list' %}">
+    <input type="search" name="q" value="{{ q|default:'' }}" placeholder="Buscar por título" aria-label="Buscar">
+  </form>
+  <nav>
+    {% if user.is_authenticated %}
+      <a class="btn" href="{% url 'pin_create' %}">Subir</a>
+      <a href="{% url 'profile' user.username %}">{{ user.username }}</a>
+      <form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}<button class="link">Salir</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Entrar</a>
+      <a class="btn" href="{% url 'signup' %}">Crear cuenta</a>
+    {% endif %}
+  </nav>
+</header>
+
+{% if messages %}
+<ul class="messages">{% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}</ul>
+{% endif %}
+
+<main>{% block content %}{% endblock %}</main>
+</body>
+</html>

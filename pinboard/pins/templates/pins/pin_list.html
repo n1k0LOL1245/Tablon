@@ -1,0 +1,22 @@
+{% extends "pins/base.html" %}
+{% block content %}
+<div class="filters">
+  <a href="?{% if q %}q={{ q }}&{% endif %}orden=recientes" class="{% if order != 'mejores' %}on{% endif %}">Recientes</a>
+  <a href="?{% if q %}q={{ q }}&{% endif %}orden=mejores" class="{% if order == 'mejores' %}on{% endif %}">Mejor puntuados</a>
+</div>
+
+<section class="masonry">
+  {% for pin in page %}{% include "pins/_card.html" %}
+  {% empty %}
+  <p class="empty">Aún no hay publicaciones{% if q %} para “{{ q }}”{% endif %}. <a href="{% url 'pin_create' %}">Sube la primera.</a></p>
+  {% endfor %}
+</section>
+
+{% if page.has_other_pages %}
+<nav class="pager">
+  {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}&q={{ q }}&orden={{ order }}">Anterior</a>{% endif %}
+  <span>Página {{ page.number }} de {{ page.paginator.num_pages }}</span>
+  {% if page.has_next %}<a href="?page={{ page.next_page_number }}&q={{ q }}&orden={{ order }}">Siguiente</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}

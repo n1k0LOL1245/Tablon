@@ -1,0 +1,18 @@
+<article class="card">
+  <a href="{{ pin.get_absolute_url }}" class="thumb">
+    {% if pin.is_video %}
+      <video src="{{ pin.media.url }}" muted loop playsinline preload="metadata"
+             onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+      <span class="badge">video</span>
+    {% else %}
+      <img src="{{ pin.media.url }}" alt="{{ pin.title }}" loading="lazy">
+    {% endif %}
+  </a>
+  <div class="meta">
+    <h3>{{ pin.title }}</h3>
+    <div class="row">
+      <a href="{% url 'profile' pin.author.username %}">{{ pin.author.username }}</a>
+      {% include "pins/_stars.html" %}
+    </div>
+  </div>
+</article>

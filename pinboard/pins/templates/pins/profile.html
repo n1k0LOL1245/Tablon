@@ -1,0 +1,9 @@
+{% extends "pins/base.html" %}
+{% block title %}{{ owner.username }} · Tablón{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ owner.username }}</h1>
+<section class="masonry">
+  {% for pin in pins %}{% include "pins/_card.html" %}
+  {% empty %}<p class="empty">Todavía no ha publicado nada.</p>{% endfor %}
+</section>
+{% endblock %}

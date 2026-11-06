@@ -1,0 +1,13 @@
+{% extends "pins/base.html" %}
+{% block title %}Subir · Tablón{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>Subir una publicación</h1>
+  <form method="post" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+    {{ form.as_div }}
+    <p class="hint">Imágenes (JPG, PNG, GIF, WebP) o videos (MP4, WebM, MOV) de hasta 50 MB.</p>
+    <button class="btn">Publicar</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "pins/base.html" %}
+{% block content %}
+<section class="panel">
+  <h1>Entrar</h1>
+  <form method="post" class="form">
+    {% csrf_token %}{{ form.as_div }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn">Entrar</button>
+  </form>
+  <p>¿No tienes cuenta? <a href="{% url 'signup' %}">Crea una</a>.</p>
+</section>
+{% endblock %}

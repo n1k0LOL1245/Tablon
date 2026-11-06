@@ -1,0 +1,38 @@
+{% extends "pins/base.html" %}
+{% block title %}{{ pin.title }} · Tablón{% endblock %}
+{% block content %}
+<section class="detail">
+  <div class="media">
+    {% if pin.is_video %}<video src="{{ pin.media.url }}" controls playsinline></video>
+    {% else %}<img src="{{ pin.media.url }}" alt="{{ pin.title }}">{% endif %}
+  </div>
+  <div class="info">
+    <h1>{{ pin.title }}</h1>
+    <p class="by">de <a href="{% url 'profile' pin.author.username %}">{{ pin.author.username }}</a> · {{ pin.created_at|date:"j M Y" }}</p>
+    {% if pin.description %}<p>{{ pin.description|linebreaksbr }}</p>{% endif %}
+
+    <div class="avg">{% include "pins/_stars.html" %}</div>
+
+    {% if user.is_authenticated %}
+      {% if user != pin.author %}
+      <form method="post" action="{% url 'pin_rate' pin.pk %}" class="rate">
+        {% csrf_token %}
+        <p>{% if my_rating %}Tu puntuación: {{ my_rating }}. Haz clic para cambiarla.{% else %}Puntúa esta publicación{% endif %}</p>
+        <div class="pick">
+          {% for n in "54321" %}
+          <button name="stars" value="{{ n }}" aria-label="{{ n }} estrellas"
+                  class="{% if n|add:0 <= my_rating|default:0 %}filled{% endif %}">★</button>
+          {% endfor %}
+        </div>
+      </form>
+      {% else %}
+      <form method="post" action="{% url 'pin_delete' pin.pk %}" onsubmit="return confirm('¿Eliminar esta publicación?')">
+        {% csrf_token %}<button class="danger">Eliminar publicación</button>
+      </form>
+      {% endif %}
+    {% else %}
+      <p><a href="{% url 'login' %}?next={{ request.path }}">Entra</a> para puntuar.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

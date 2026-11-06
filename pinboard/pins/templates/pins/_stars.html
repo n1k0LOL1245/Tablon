@@ -1,0 +1,6 @@
+{% if pin.n_ratings %}
+<span class="rating" title="{{ pin.avg|stringformat:'.1f' }} de 5 ({{ pin.n_ratings }})">
+  <span class="stars" style="--v:{{ pin.avg|stringformat:'f' }}" aria-hidden="true"></span>
+  <small>{{ pin.avg|floatformat:1 }} · {{ pin.n_ratings }}</small>
+</span>
+{% else %}<small class="muted">Sin puntuar</small>{% endif %}
